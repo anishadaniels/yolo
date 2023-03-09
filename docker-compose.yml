@@ -1,0 +1,20 @@
+ version: '3.3'
+ services:
+   server:
+    image: docker.io/anishadaniels/yolobackend
+    ports:
+      - "5000:5000"
+    env_file:
+      - ./backend/.env
+    networks:
+      - yolo-my-net
+   client:
+    image: docker.io/anishadaniels/yoloclient
+    ports:
+      - "3000:3000"
+    networks:
+      - yolo-my-net
+    depends_on:
+      - server
+ networks:
+  yolo-my-net:
