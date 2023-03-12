@@ -38,7 +38,8 @@ The same directives as client service dockerfile
 In docker-compose.yml file, I specified a bridge network called yolo-my-net for my microservices to communicate with each other: I specified network driver to type bridge.
 
   # GIT WORKFLOW .
-
+    Used centralised git workflow .
+    
     Forking and cloning yolo repository to my local machine using git clone (for cloning)
 
 
