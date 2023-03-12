@@ -39,7 +39,7 @@ In docker-compose.yml file, I specified a bridge network called yolo-my-net for 
 
   # GIT WORKFLOW .
     Used centralised git workflow .
-    
+
     Forking and cloning yolo repository to my local machine using git clone (for cloning)
 
 
@@ -58,7 +58,7 @@ In docker-compose.yml file, I specified a bridge network called yolo-my-net for 
 # Successful running of the applications and if not, debugging measures applied.
 I updated the package.json file to resolve the error cannot find module dotenv.
 
-    Good practices such as Docker image tag naming standards for ease of identification of images and containers.
+# Good practices such as Docker image tag naming standards for ease of identification of images and containers.
         I used the repository name together with the service name to tag my images and versioning method to name my images  yoloclient:v1.0.1 yolobackend:v1.0.1 2.I used lowercase letters to do this
 
 # Docker-compose volume definition and usage (where necessary).
