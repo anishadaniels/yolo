@@ -1,7 +1,7 @@
 version: '3.9'
 services:
    server:
-    image: docker.io/anishadaniels/yolobackend:v1.0.1
+    image: anishadaniels/yolobackend:v1.0.1
     ports:
       - "5000:5000"
     env_file:
@@ -11,7 +11,7 @@ services:
     volumes:
       - yolovol:/var/lib/docker/volumes/yolovol/_data
    client:
-    image: docker.io/anishadaniels/yoloclient:v1.0.1
+    image: anishadaniels/yoloclient:v1.0.1
     ports:
       - "3000:3000"
     networks:
