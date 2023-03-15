@@ -16,6 +16,8 @@ services:
       - "3000:3000"
     networks:
       - yolo-my-net
+    volumes:
+       - yolovol:/var/lib/docker/volumes/yolovol/_data
     depends_on:
       - server
     stdin_open: true
