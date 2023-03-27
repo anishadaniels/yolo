@@ -1,28 +1,29 @@
-version: '3.9'
+version: '3.3'
 services:
-   server:
+  server:
     image: anishadaniels/yolobackend:v1.0.1
     ports:
       - "5000:5000"
     env_file:
       - ./backend/.env
     networks:
-      - yolo-my-net
+      - yolo_net
     volumes:
       - yolovol:/var/lib/docker/volumes/yolovol/_data
-   client:
+  client:
     image: anishadaniels/yoloclient:v1.0.1
     ports:
       - "3000:3000"
     networks:
-      - yolo-my-net
+      - yolo_net
     volumes:
-       - yolovol:/var/lib/docker/volumes/yolovol/_data
+      - yolovol:/var/lib/docker/volumes/yolovol/_data
     depends_on:
       - server
     stdin_open: true
 networks:
-  yolo-my-net:
+  yolo_net:
 volumes:
   yolovol:
- 
+
+
