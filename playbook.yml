@@ -1,0 +1,131 @@
+---
+- name: Provision Vagrant VM and set up Docker containers
+  hosts: all
+  become: true
+  vars:
+    ansible_user: anisha
+    ansible_password: "@0726688158."
+    vm_name: bionic
+    vm_cpus: "2"
+    vm_memory: "2048"
+    vm_box: ubuntu/bionic64
+    app_port: "3000"
+    app_name: yolo
+    db_password: yVS1UcZySkfOqdmN
+    backend_image: yolobackend:v1.0.1
+    backend_port: "5000:5000"
+    frontend_image: yoloclient:v1.0.1
+    frontend_port: "3000:3000"
+    volumes:
+      - yolovol:/var/lib/docker/volumes/yolovol/_data
+  tasks:
+    - name: Update apt cache
+      apt:
+        update_cache: yes
+
+    - name: Install required packages
+      apt:
+        name:
+          - git
+          - docker.io
+          - apt-transport-https
+          - ca-certificates
+          - curl
+          - gnupg-agent
+          - software-properties-common
+        state: present
+      become: true
+
+    - name: Add Docker GPG key
+      apt_key:
+        url: https://download.docker.com/linux/ubuntu/gpg
+        state: present
+      tags:
+        - docker
+
+    - name: Add Docker APT repository
+      apt_repository:
+        repo: deb [arch=amd64] https://download.docker.com/linux/ubuntu bionic stable
+        state: present
+      tags:
+        - docker
+
+    - name: Update and upgrade packages
+      become: true
+      apt:
+        update_cache: yes
+        upgrade: yes
+
+    - name: Install containerd
+      apt:
+        name: containerd
+        state: present
+
+    - name: Install Python Docker SDK library
+      become: true
+      apt:
+        name: python3-docker
+        state: present
+      tags:
+        - docker
+ 
+    - name: Add current user to docker group
+      user:
+        name: anisha
+        groups: docker
+        append: yes
+      tags:
+        - docker
+
+    - name: Clone app code from GitHub
+      git:
+        repo: https://github.com/anishadaniels/yolo.git
+        dest: /home/anisha/yolo
+        #version: master
+
+    - name: Set up backend container
+      include_role:
+        name: backend
+      vars:
+        db_password: "{{ db_password }}"
+        backend_image: "{{ backend_image }}"
+        backend_port: "{{ backend_port }}"
+        volumes: "{{ volumes }}"
+      tags:
+        - backend
+
+    - name: Set up frontend container
+      include_role:
+        name: frontend
+      vars:
+        frontend_image: "{{ frontend_image }}"
+        frontend_port: "{{ frontend_port }}"
+        volumes: "{{ volumes }}"
+      tags:
+        - frontend
+
+   # - name: Log in to Docker registry
+    #  docker_login:
+     #   registry_url: https://hub.docker.com
+      #  username: AnishaDaniels
+       # password: " @0726688158." 
+
+    #- name: Pull Docker image
+     # docker_image:
+      #  name: 
+       #   - yolobackend:v1.0.1
+        #  - yoloclient:v1.0.1
+
+    #- name: Deploy Containers
+     # docker_container:
+      #  name: "{{ item }}"
+       # image: "{{ item }}"
+        #ports:
+         # - "{{ backend_port }}"
+          #- "{{ frontend_port }}"
+        #volumes:
+         # - "{{ volumes }}"
+        #restart_policy: always
+      #with_items:
+       # - "{{ backend_image }}"
+        #- "{{ frontend_image }}"
