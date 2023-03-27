@@ -16,6 +16,7 @@
     backend_port: "5000:5000"
     frontend_image: yoloclient:v1.0.1
     frontend_port: "3000:3000"
+    app_root_dir: /home/anisha/yolo
     volumes:
       - yolovol:/var/lib/docker/volumes/yolovol/_data
   tasks:
@@ -81,51 +82,12 @@
       git:
         repo: https://github.com/anishadaniels/yolo.git
         dest: /home/anisha/yolo
-        #version: master
+        version: master
 
-    - name: Set up backend container
-      include_role:
-        name: backend
-      vars:
-        db_password: "{{ db_password }}"
-        backend_image: "{{ backend_image }}"
-        backend_port: "{{ backend_port }}"
-        volumes: "{{ volumes }}"
-      tags:
-        - backend
+    - name: Build and run Docker containers(client, backend and Mongo DB)
+      command: docker compose up -d
+      args:
+        chdir: /home/anisha/yolo   
+    
 
-    - name: Set up frontend container
-      include_role:
-        name: frontend
-      vars:
-        frontend_image: "{{ frontend_image }}"
-        frontend_port: "{{ frontend_port }}"
-        volumes: "{{ volumes }}"
-      tags:
-        - frontend
-
-   # - name: Log in to Docker registry
-    #  docker_login:
-     #   registry_url: https://hub.docker.com
-      #  username: AnishaDaniels
-       # password: " @0726688158." 
-
-    #- name: Pull Docker image
-     # docker_image:
-      #  name: 
-       #   - yolobackend:v1.0.1
-        #  - yoloclient:v1.0.1
-
-    #- name: Deploy Containers
-     # docker_container:
-      #  name: "{{ item }}"
-       # image: "{{ item }}"
-        #ports:
-         # - "{{ backend_port }}"
-          #- "{{ frontend_port }}"
-        #volumes:
-         # - "{{ volumes }}"
-        #restart_policy: always
-      #with_items:
-       # - "{{ backend_image }}"
-        #- "{{ frontend_image }}"
+    
