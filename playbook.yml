@@ -84,10 +84,8 @@
         dest: /home/anisha/yolo
         version: master
 
-    - name: Build and run Docker containers(client, backend and Mongo DB)
+    - name: Build and run Docker containers(client, backend )
       command: docker compose up -d
       args:
         chdir: /home/anisha/yolo   
-    
-
     
