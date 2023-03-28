@@ -13,11 +13,21 @@ Vagrant.configure("2") do |config|
   # Every Vagrant development environment requires a box. You can search for
   # boxes at https://vagrantcloud.com/search.
   config.vm.box = "ubuntu/bionic64"
-  config.vm.hostname = "bionic"
+  #config.vm.hostname = "bionic"
   config.vm.provision "ansible" do |ansible|
     ansible.playbook = "playbook.yml"
   end
-  config.vm.network "private_network", ip: "192.168.62.101"
+  # Frontent Application server
+  config.vm.define "frontend" do |app|
+    app.vm.hostname = "frontend"
+    app.vm.network :private_network, ip: "192.168.60.4"
+  end
+    # Backend Application server
+  config.vm.define "backend" do |app|
+    app.vm.hostname = "backend"
+    app.vm.network :private_network, ip: "192.168.60.5"
+    end
+  #config.vm.network "private_network", ip: "192.168.62.101"
   # Disable automatic box update checking. If you disable this, then
   # boxes will only be checked for updates when the user runs
   # `vagrant box outdated`. This is not recommended.
