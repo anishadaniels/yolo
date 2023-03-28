@@ -92,18 +92,4 @@ The fifth task updates and upgrades all packages on the Vagrant VM, including th
 
 The sixth task installs containerd to help in docker installation
 
-# Install Python Docker SDK library
-Installs the Python Docker SDK library using apt module.
 
-
- Adds the current user to the docker group using the user module.
-
-# Clone app code from GitHub
-Clones the app code from the GitHub repository specified in the repo parameter of the git module, and saves it to the destination directory specified in the dest parameter.
-
-# Build and run Docker containers(client, backend )
-
-    Builds and runs the Docker containers using the docker compose up command. The chdir parameter is used to specify the directory where the docker-compose.yml file is located.
-
-
-The tags parameter is used to group the tasks and make it easier to run specific tasks using the --tags option with the ansible-playbook command. For example, running ansible-playbook myplaybook.yml --tags docker will only execute the tasks with the "docker" tag.
