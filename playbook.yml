@@ -5,6 +5,9 @@
   become: yes
   vars:
     NODEJS_VERSION: "14"
+    volumes: "- yolovol:/var/lib/docker/volumes/yolovol/_data" 
+    frontend_image: "yoloclient:v1.0.1"
+    frontend_port: "3000"
   tasks:
     - name: Install GPG
       tags: nodejs, install, setup
@@ -35,6 +38,21 @@
         dest: /home/anisha/yolo/
         clone: yes
         update: yes
+    - name: "Install forever (to run Node.js app)."
+      npm: name=forever global=yes state=present
+    - name: "Check list of Node.js apps running."
+      command: forever list
+      register: forever_list
+      changed_when: false
+    - name: Set up frontend container
+      include_role:
+        name: frontend
+      vars:
+        frontend_image: "{{ frontend_image }}"
+        frontend_port: "{{ frontend_port }}"
+        volumes: "{{ volumes }}"
+      tags:
+        - frontend
     - name: Install dependencies from lockfile
       tags: app, build, deploy
       shell: npm install
@@ -42,7 +60,7 @@
         chdir: /home/anisha/yolo/client/
     - name: Start App
       tags: app, build, deploy
-      shell: npm start
+      shell: forever --minUptime 5000 --spinSleepTime 20000 start -c "npm start" src
       args:
         chdir: /home/anisha/yolo/client/
 
@@ -52,6 +70,10 @@
   become: yes
   vars:
     NODEJS_VERSION: "14"
+    backend_image: "yolobackend:v1.0.1"
+    backend_port: "5000"
+    volumes: "- yolovol:/var/lib/docker/volumes/yolovol/_data" 
+
   tasks:
     - name: Install GPG
       tags: nodejs, install, setup
@@ -82,6 +104,21 @@
         dest: /home/anisha/yolo/
         clone: yes
         update: yes
+    - name: "Install forever (to run Node.js app)."
+      npm: name=forever global=yes state=present
+    - name: "Check list of Node.js apps running."
+      command: forever list
+      register: forever_list
+      changed_when: false
+    - name: Set up backend container
+      include_role:
+        name: backend
+      vars:
+        backend_image: "{{ backend_image }}"
+        backend_port: "{{ backend_port }}"
+        volumes: "{{ volumes }}"
+      tags:
+      - backend
     - name: Install dependencies from lockfile
       tags: app, build, deploy
       shell: npm install
@@ -89,7 +126,8 @@
         chdir: /home/anisha/yolo/backend/
     - name: Start App
       tags: app, build, deploy
-      shell: npm start
+      shell: forever --minUptime 5000 --spinSleepTime 20000 start -c "npm start" server.js
       args:
         chdir: /home/anisha/yolo/backend/  
         
+
