@@ -121,3 +121,60 @@ Tags are used to group tasks together and allow for selective execution of speci
 # Conclusion
 
 This Ansible playbook provides an automated way to deploy the YOLO application on both the frontend and backend servers. By using roles, variables, and tags, the playbook can be easily customized and reused for other applications.
+
+# Explanation of Frontend Deployment
+
+This YAML file is a Kubernetes deployment configuration for the frontend application of the YOLO project. The deployment consists of a single replica of a container running the YOLO frontend application.
+
+# Metadata
+
+The metadata section of this file contains information about the deployment such as its name, labels, and annotations. The labels and annotations are used to provide additional information about the deployment.
+
+# Spec
+
+The spec section of this file defines the desired state of the deployment. It specifies that there should be one replica of the frontend container running, and that the container should be created from the specified image.
+
+The deployment selector matches labels that are assigned to pods in the cluster. The labels in this file are used to match the frontend pod.
+
+The template section of the spec defines the pod template for the deployment. It specifies the labels that will be assigned to the pod and the container that should be run in the pod.
+
+The frontend container runs the YOLO frontend application and exposes port 3000. The container also sets two environment variables, CLIENT_HOST and CLIENT_PORT, which are used to connect to the backend service.
+
+# Explanation of Backend Deployment
+
+This YAML file is a Kubernetes deployment configuration for the backend application of the YOLO project. The deployment consists of a single replica of a container running the YOLO backend application.
+
+# Metadata
+
+The metadata section of this file contains information about the deployment such as its name, labels, and annotations. The labels are used to provide additional information about the deployment.
+
+# Spec
+
+The spec section of this file defines the desired state of the deployment. It specifies that there should be one replica of the backend container running, and that the container should be created from the specified image.
+
+The deployment selector matches labels that are assigned to pods in the cluster. The labels in this file are used to match the backend pod.
+
+The template section of the spec defines the pod template for the deployment. It specifies the labels that will be assigned to the pod and the container that should be run in the pod.
+
+The backend container runs the YOLO backend application and exposes port 5000.
+# Explanation of Backend Service
+
+This YAML file is a Kubernetes service configuration for the backend application of the YOLO project. The service provides a stable IP address and DNS name for the backend deployment.
+
+# Metadata
+
+The metadata section of this file contains information about the service such as its name.
+# Spec
+
+The spec section of this file defines the desired state of the service. It specifies that the service should be of type LoadBalancer and that it should match the labels of the backend deployment. The ports section specifies the port mappings between the service and the backend deployment.
+# Explanation of Frontend Service
+
+This YAML file is a Kubernetes service configuration for the frontend application of the YOLO project. The service provides a stable IP address and DNS name for the frontend deployment.
+# Metadata
+
+The metadata section of this file contains information about the service such as its name, labels, and annotations. The labels and annotations are used to provide additional information about the service.
+# Spec
+
+The spec section of this file defines the desired state of the service. It specifies that the service should be of type LoadBalancer and that it should match the labels of the frontend deployment. The ports section specifies the port mappings between the service and the frontend deployment.
+
+I hope this explanation helps you understand the purpose and configuration of each file in your deployment.
