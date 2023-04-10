@@ -140,23 +140,65 @@ The template section of the spec defines the pod template for the deployment. It
 
 The frontend container runs the YOLO frontend application and exposes port 3000. The container also sets two environment variables, CLIENT_HOST and CLIENT_PORT, which are used to connect to the backend service.
 
-# Explanation of Backend Deployment
+# Explanation of YAML code for backend deployment and persistent volume claim
+Statefulset and Deployment
 
-This YAML file is a Kubernetes deployment configuration for the backend application of the YOLO project. The deployment consists of a single replica of a container running the YOLO backend application.
 
 # Metadata
 
-The metadata section of this file contains information about the deployment such as its name, labels, and annotations. The labels are used to provide additional information about the deployment.
+    name: This is the name of the deployment.
+    labels: These are custom labels that can be used to identify and group Kubernetes objects.
+
+# Selector
+
+The selector specifies how the Deployment finds which Pods to manage.
+# Replicas
+
+The replicas field specifies the desired number of replicas for the Deployment.
+# Template
+
+The template field specifies the Pod template to use for the Deployment.
+# Metadata
+
+    labels: These are the labels applied to the Pod.
 
 # Spec
 
-The spec section of this file defines the desired state of the deployment. It specifies that there should be one replica of the backend container running, and that the container should be created from the specified image.
+The spec field of the Pod template specifies the container(s) to run in the Pod.
+# Containers
 
-The deployment selector matches labels that are assigned to pods in the cluster. The labels in this file are used to match the backend pod.
+    name: The name of the container.
+    image: The Docker image to use for the container.
+    ports: The ports to expose for the container.
+    volumeMounts: The volumes to mount in the container.
 
-The template section of the spec defines the pod template for the deployment. It specifies the labels that will be assigned to the pod and the container that should be run in the pod.
+# Env
 
-The backend container runs the YOLO backend application and exposes port 5000.
+    name: The name of the environment variable.
+    valueFrom.secretKeyRef.name: The name of the Secret that contains the environment variable value.
+    valueFrom.secretKeyRef.key: The key in the Secret that contains the environment variable value.
+
+# Volumes
+
+    name: The name of the volume.
+    persistentVolumeClaim.claimName: The name of the PersistentVolumeClaim to use for the volume.
+
+# Persistent Volume Claim
+
+The Persistent Volume Claim (PVC) is a separate YAML object that specifies the storage requirements for the Deployment.
+# Metadata
+
+    name: The name of the PVC.
+
+# Spec
+
+The spec field of the PVC specifies the access mode and storage requirements.
+
+    accessModes: The access mode for the PVC. In this case, it's ReadWriteOnce, meaning the volume can be mounted as read-write by a single node.
+    resources.requests.storage: The requested storage size for the PVC.
+    storageClassName: The name of the StorageClass to use for the PVC. In this case, it's set to standard.
+
+
 # Explanation of Backend Service
 
 This YAML file is a Kubernetes service configuration for the backend application of the YOLO project. The service provides a stable IP address and DNS name for the backend deployment.
@@ -178,3 +220,5 @@ The metadata section of this file contains information about the service such as
 The spec section of this file defines the desired state of the service. It specifies that the service should be of type LoadBalancer and that it should match the labels of the frontend deployment. The ports section specifies the port mappings between the service and the frontend deployment.
 
 I hope this explanation helps you understand the purpose and configuration of each file in your deployment.
+
+# THE WEBSITE URL : http://35.228.80.245:3000
